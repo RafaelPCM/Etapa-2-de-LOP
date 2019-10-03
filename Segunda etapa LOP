@@ -1,0 +1,67 @@
+var x = 150;
+var y = 355;
+var x2 = 200
+var y2 = 330
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw(nave) {
+  background(0);
+
+  if(x2 > 400)
+    x2 = 0;
+
+  if(x2 < 0)
+    x2 = 400;
+
+  if(y2 > 400)
+    y2 = 0;
+
+  if(y2 < 0)
+     y2 = 400;
+
+  if (keyIsDown(LEFT_ARROW))
+    x2-=10;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x2+=10;
+
+  if (keyIsDown(UP_ARROW))
+    y2-=10;
+
+  if (keyIsDown(DOWN_ARROW))
+    y2+=10;
+
+  fill(255, 0, 0)
+  rect(x2, y2, 40, 50, 0);
+
+  if(x > 400)
+    x = 0;
+
+  if(x < 0)
+    x = 400;
+
+  if(y > 400)
+    y = 0;
+
+  if(y < 0)
+     y = 400;
+
+  if (keyIsDown(LEFT_ARROW))
+    x-=10;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x+=10;
+
+  if (keyIsDown(UP_ARROW))
+    y-=10;
+
+  if (keyIsDown(DOWN_ARROW))
+    y+=10;
+
+  fill(0,0,255)
+  ellipse(x, y, 50, 50);
+
+}
