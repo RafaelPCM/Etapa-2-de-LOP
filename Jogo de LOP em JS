@@ -1,0 +1,181 @@
+var vvi = 5;
+var axp = 3;
+var ayp = 3;
+
+// telas do jogo
+var tela = 1;
+
+//bola azul
+var xp = 200;
+var yp = 380;
+var raioP = 10;
+
+//tiro
+var xd = xp;
+var yd = yp;
+var estadoD = false;
+var raioD = 4;
+
+//inimigo
+var yi = -20;
+var xi = 20;
+var raioI = 16;
+var vyi = [];
+var vxi = [];
+var qvi = 5;
+//var tami = [];
+
+//infos
+var vidas = 3;
+var pontos = 0;
+var nivel = 1;
+var bdp = 2000;
+
+function setup() {
+  createCanvas(400, 400);
+  for (var i = 0; i < 100; i++) {
+    vxi[i] = random(10, 390);
+    vyi[i] = random(-400, 0);
+    // var tami[i] = random(2,30);
+    frameRate(144);
+  }
+}
+
+function draw() {
+
+  if (tela == 1) {
+    background(255, 0, 0);
+    textSize(40);
+    fill(0);
+    text("Try Not Die", 100, 100);
+    textSize(10);
+    text("Press CONTROL to shoot", 150, 395);
+    textSize(30);
+    text("Tente passar do nível 10", 35, 380)
+    text("Press Enter to start", 70, 350);
+    if (keyIsDown(ENTER)) {
+      tela = 2;
+    }
+  }
+
+  if (tela == 2) {
+    background(255);
+
+    //informações
+    textSize(20);
+    fill(0, 100, 150);
+    text("Vidas:" + vidas, 10, 20);
+    text("Pontos:" + pontos, 150, 20);
+    text("Nivel:" + nivel, 300, 20);
+
+    //disparo
+    if (keyIsDown(CONTROL) && estadoD == false) {
+      xd = xp;
+      yd = yp;
+      estadoD = true;
+    }
+
+    //bola do disparo
+    if (estadoD) {
+      fill(0, 255, 0)
+      ellipse(xd, yd, 2 * raioD, 2 * raioD);
+      yd = yd - 15
+
+      if (yd < 0) {
+        estadoD = false;
+      }
+    }
+
+    // inimigo
+    //caso queria colocar tamanhos                 aleatorios, so colocar vtami[i] no         tamanho da ellipse
+    for (var i = 0; i < qvi; i++) {
+      fill(255, 0, 0);
+      ellipse(vxi[i], vyi[i], 2 * raioI, 2 * raioI);
+      vyi[i] = vyi[i] + vvi;
+      console.log(qvi);
+      if (vyi[i] > 425) {
+        vyi[i] = random(-400, -20);
+        vxi[i] = random(0, 400);
+      }
+
+      if (dist(xd, yd, vxi[i], vyi[i]) <= (raioI + raioD)) {
+        vyi[i] = random(-400, -100);
+        vxi[i] = random(400);
+      }
+
+      //pontos
+      if (vyi[i] > 420) {
+        pontos = pontos + 40;
+      }
+
+      //mudar de nivel
+      if (pontos > bdp) {
+        nivel++;
+        bdp = bdp + 2000;
+        vvi = vvi + 0.5;
+        qvi = qvi + 1;
+        axp = axp + 0.5;
+        ayp = ayp + 0.5;
+      }
+    }
+
+
+    //movimento da bola
+    if (xp > 400)
+      xp = 0;
+
+    if (xp < 0)
+      xp = 400;
+
+    if (yp > 400)
+      yp = 0;
+
+    if (yp < 0)
+      yp = 400;
+
+    if (keyIsDown(LEFT_ARROW))
+      xp -= axp;
+
+    if (keyIsDown(RIGHT_ARROW))
+      xp += axp;
+
+    if (keyIsDown(UP_ARROW))
+      yp -= ayp;
+
+    if (keyIsDown(DOWN_ARROW))
+      yp += ayp;
+
+    // bola azul
+    for (i = 0; i < qvi; i++) {
+      fill(0, 0, 255)
+      ellipse(xp, yp, 2 * raioP, 2 * raioP);
+      if (dist(xp, yp, vxi[i], vyi[i]) <= (raioI + raioP)) {
+        vyi[i] = -20;
+        vxi[i] = random(400);
+        xp = 200;
+        yp = 380;
+        tela = 3;
+      }
+    }
+  }
+
+  if (tela == 3) {
+    background(0);
+    textSize(32);
+    fill(255, 0, 0);
+    text("Game Over", 120, 100);
+    text("A vida é só uma pcr", 50, 300);
+    text("Press Espace to restart", 40, 350);
+    vidas = 3;
+    pontos = 0;
+    nivel = 1;
+    bdp = 2000;
+    vvi = 5;
+    axp = 3;
+    ayp = 3;
+    qvi = 5;
+    if (keyIsDown(32)) {
+      tela = 1;
+    }
+  }
+}
